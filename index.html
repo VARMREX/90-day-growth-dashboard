@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#10251d">
+<title>My 90-Day Growth Plan</title>
+<style>
+:root{--bg:#f4f7f5;--card:#fff;--ink:#17251e;--muted:#637169;--line:#dfe7e1;--green:#176b4b;--green2:#e1f3e9;--dark:#10251d;--gold:#f4c76a;--shadow:0 8px 24px rgba(20,50,35,.06)}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{background:var(--dark);color:#fff;padding:28px 18px 24px;border-radius:0 0 24px 24px}
+.wrap{max-width:900px;margin:auto;padding:0 16px} .eyebrow{text-transform:uppercase;letter-spacing:.13em;font-size:11px;color:#b5d9c5;font-weight:800}
+h1{font-size:29px;line-height:1.12;margin:9px 0} header p{margin:8px 0 0;color:#d7e7dd;font-size:14px}
+main{padding:18px 0 42px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:-4px}
+.stat,.card{background:var(--card);border:1px solid var(--line);border-radius:17px;box-shadow:var(--shadow)}
+.stat{padding:13px 10px}.stat strong{display:block;font-size:22px}.stat span{font-size:11px;color:var(--muted)}
+.progress{height:8px;background:#e5ece7;border-radius:99px;overflow:hidden;margin-top:12px}.progress div{height:100%;width:0;background:var(--green);transition:width .2s}
+nav{display:flex;gap:8px;overflow:auto;padding:16px 0 12px;position:sticky;top:0;background:var(--bg);z-index:2}
+nav button,.btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:10px 14px;font:inherit;font-size:13px;white-space:nowrap}
+nav button.active,.btn.primary{background:var(--green);color:#fff;border-color:var(--green)}
+section{display:none}section.active{display:block}.card{padding:17px;margin:0 0 13px}.section-title{font-size:21px;margin:8px 0 12px}
+h2{font-size:18px;margin:0 0 6px}h3{font-size:15px;margin:14px 0 7px}.muted{color:var(--muted);font-size:13px}
+.task{display:flex;align-items:flex-start;gap:11px;padding:12px 0;border-bottom:1px solid #edf1ee}.task:last-child{border-bottom:0;padding-bottom:0}
+input[type=checkbox]{width:21px;height:21px;accent-color:var(--green);flex:0 0 auto;margin:2px 0 0}
+.task label{flex:1;cursor:pointer}.task label strong{display:block;font-size:14px;font-weight:650}.task label small{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+.task input:checked+label strong{text-decoration:line-through;color:#78847c}
+.pill{display:inline-block;background:var(--green2);color:var(--green);padding:4px 8px;border-radius:99px;font-size:11px;font-weight:750;margin-bottom:8px}
+a{color:var(--green);font-weight:650;text-decoration:none}a:hover{text-decoration:underline}
+.linkrow{padding:12px 0;border-bottom:1px solid #edf1ee}.linkrow:last-child{border-bottom:0}.linkrow a{display:block}.linkrow p{font-size:12px;color:var(--muted);margin:4px 0 0}
+.daygrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.day{background:#f8faf8;border:1px solid var(--line);border-radius:12px;padding:12px}.day b{display:block;font-size:12px;color:var(--green);margin-bottom:5px}.day span{font-size:13px}
+input[type=text],textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;font:inherit;background:white;color:var(--ink)}
+textarea{min-height:90px;resize:vertical}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+button{cursor:pointer}.btn{cursor:pointer}.foot{text-align:center;color:var(--muted);font-size:11px;padding:18px 0}
+.notice{background:#fff7e4;border:1px solid #f0dfb6;border-radius:12px;padding:12px;font-size:13px;margin-bottom:13px}
+@media(min-width:700px){header{padding:36px 20px 30px}h1{font-size:36px}.wrap{padding:0 22px}.two{display:grid;grid-template-columns:1fr 1fr;gap:13px}.two .card{margin-bottom:0}.daygrid{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="eyebrow">Your personal learning dashboard</div>
+<h1>My 90-Day Growth Plan</h1>
+<p>Mechatronics • Free learning • Portfolio projects • LinkedIn • Internships & online gigs</p>
+<p id="dateLine"></p>
+</div></header>
+<main class="wrap">
+
+<div class="card" id="authCard" style="margin-top:16px">
+<h2>Sign in to sync your growth plan</h2>
+<p class="muted">Use the same email and password on your iPhone and laptop. Your checklist and notes are saved to your Firebase account.</p>
+<label for="authEmail">Email</label><input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com">
+<label for="authPassword">Password</label><input id="authPassword" type="password" autocomplete="current-password" placeholder="At least 6 characters">
+<div class="actions"><button class="btn primary" id="signInBtn" type="button">Sign in</button><button class="btn" id="signUpBtn" type="button">Create account</button><button class="btn" id="signOutBtn" type="button" style="display:none">Sign out</button></div>
+<p id="authStatus" class="muted" role="status">Sign in or create your account to load your cloud-saved progress.</p>
+</div>
+<div id="dashboardContent" style="display:none">
+<div class="stats">
+<div class="stat"><strong id="doneCount">0</strong><span>Tasks completed</span></div>
+<div class="stat"><strong id="totalCount">0</strong><span>Total tasks</span></div>
+<div class="stat"><strong id="percent">0%</strong><span>Overall progress</span></div>
+</div><div class="progress"><div id="progressBar"></div></div>
+<nav>
+<button class="active" data-tab="today">Today</button><button data-tab="roadmap">90-day roadmap</button><button data-tab="courses">Free courses</button><button data-tab="portfolio">Portfolio</button><button data-tab="career">LinkedIn & jobs</button><button data-tab="notes">Notes</button>
+</nav>
+<section id="today" class="active">
+<h2 class="section-title">Your daily routine</h2>
+<div class="card">
+<span class="pill">Recommended 90-minute session</span>
+<div class="daygrid">
+<div class="day"><b>10 MIN</b><span>Review yesterday's notes</span></div>
+<div class="day"><b>40 MIN</b><span>Course lesson or concept</span></div>
+<div class="day"><b>30 MIN</b><span>Hands-on practice / project</span></div>
+<div class="day"><b>10 MIN</b><span>Save work and plan next step</span></div>
+</div>
+<p class="muted">On career days, spend 20 minutes finding opportunities, 25 minutes improving your profile, 30 minutes applying or networking, and 15 minutes tracking follow-ups.</p>
+</div>
+<div class="card"><h2>This week's plan</h2><p class="muted">Week 1 • 19–25 October 2026</p><div id="weekTasks"></div></div>
+<div class="card"><h2>Weekly rhythm</h2><div id="weeklyRoutine"></div></div>
+<div class="notice"><strong>Remember:</strong> Free course completion certificates are not the same as professional certification exams. Always check the course's current completion and certificate terms.</div>
+</section>
+<section id="roadmap">
+<h2 class="section-title">Your 13-week roadmap</h2>
+<div id="roadmapTasks"></div>
+</section>
+<section id="courses">
+<h2 class="section-title">Free learning links</h2>
+<p class="muted">Prioritize Simulink, Onshape and Python. Don't collect certificates without practising the skill.</p>
+<div class="card" id="courseLinks"></div>
+</section>
+<section id="portfolio">
+<h2 class="section-title">Portfolio projects</h2>
+<p class="muted">Each project should include the problem, tools, method, results, limitations, screenshots and files or code where possible.</p>
+<div id="portfolioTasks"></div>
+<div class="card"><h2>Project write-up template</h2><p class="muted">Copy this outline into a document for each project.</p><textarea id="template" readonly>Project title:
+Problem:
+Tools used:
+What I built:
+Method:
+Results (include a graph or screenshot):
+What I learned:
+Limitations / next improvement:
+Links to files or code:</textarea><div class="actions"><button class="btn primary" onclick="copyTemplate()">Copy template</button></div></div>
+</section>
+<section id="career">
+<h2 class="section-title">LinkedIn & opportunities</h2>
+<div class="card"><h2>LinkedIn checklist</h2><div id="linkedinTasks"></div></div>
+<div class="card"><h2>Weekly opportunity routine</h2><div id="jobTasks"></div></div>
+<div class="card"><h2>Suggested searches</h2>
+<div class="linkrow"><a target="_blank" rel="noopener" href="https://www.linkedin.com/jobs/">LinkedIn Jobs</a><p>Search: Mechatronics Intern, Automation Intern, Engineering Intern, CAD Intern, SIWES Engineering.</p></div>
+<div class="linkrow"><a target="_blank" rel="noopener" href="https://www.linkedin.com/">LinkedIn networking</a><p>Connect with alumni, engineering professionals, recruiters and potential collaborators.</p></div>
+<div class="linkrow"><a target="_blank" rel="noopener" href="https://github.com/">GitHub</a><p>Keep project code, README files and useful technical notes in one place.</p></div>
+<div class="linkrow"><a target="_blank" rel="noopener" href="https://www.upwork.com/">Upwork</a><p>Explore scoped beginner-friendly work. Competition is real; build examples before pitching services.</p></div>
+<div class="linkrow"><a target="_blank" rel="noopener" href="https://www.fiverr.com/">Fiverr</a><p>Consider a narrowly defined service only after you can reliably deliver it.</p></div>
+</div>
+<div class="card"><h2>Connection message starter</h2><textarea id="message" readonly>Hello [Name], I'm a Mechatronics Engineering student developing my skills in MATLAB, CAD and automation. I'm interested in your work in [area] and would be glad to connect and learn from your experience. Thank you.</textarea><div class="actions"><button class="btn primary" onclick="copyMessage()">Copy message</button></div></div>
+</section>
+<section id="notes">
+<h2 class="section-title">Your notes & wins</h2>
+<div class="card"><h2>What did I learn today?</h2><p class="muted">Your notes are saved in this browser on this device.</p><textarea id="notesBox" placeholder="Today's lesson, what was difficult, what I built, next action..."></textarea><div class="actions"><button class="btn primary" onclick="saveNotes()">Save notes</button><button class="btn" onclick="exportData()">Export my progress</button><button class="btn" onclick="resetProgress()">Reset all checkboxes</button></div><p id="noteStatus" class="muted"></p></div>
+<div class="card"><h2>End-of-week review</h2><textarea id="reviewBox" placeholder="What did I finish? What should I improve? What is next week's main goal?"></textarea><div class="actions"><button class="btn primary" onclick="saveReview()">Save weekly review</button></div></div>
+</section>
+<div class="foot">Built for your 90-day plan • Signed-in progress syncs through Firebase. Export a backup occasionally.</div>
+</div>
+</main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+const firebaseConfig = {
+ apiKey:"AIzaSyA-bfFXk_6qzcJ4N8-krqB2f6q3NIsJ3no",
+ authDomain:"gideon-s-growth-dashboard.firebaseapp.com",
+ projectId:"gideon-s-growth-dashboard",
+ storageBucket:"gideon-s-growth-dashboard.firebasestorage.app",
+ messagingSenderId:"623911539090",
+ appId:"1:623911539090:web:4112376718952607c2f14b",
+ measurementId:"G-HEXQL66YK1"
+};
+const app=initializeApp(firebaseConfig), auth=getAuth(app), db=getFirestore(app);
+let currentUser=null, cloudState=null, saveTimer=null, loadingRemote=false;
+const authStatus=document.getElementById("authStatus");
+function status(m){authStatus.textContent=m}
+function localSnapshot(){return {tasks:(()=>{try{return JSON.parse(localStorage.getItem("growthTasks")||"{}")}catch(e){return {}}})(),notes:localStorage.getItem("growthNotes")||"",review:localStorage.getItem("growthReview")||""}}
+function readScreenState(){const tasks={};document.querySelectorAll("[data-task]").forEach(el=>tasks[el.dataset.task]=!!el.checked);return {tasks,notes:document.getElementById("notesBox").value,review:document.getElementById("reviewBox").value}}
+function friendlyError(e){const c=e?.code||"";if(c.includes("permission-denied"))return "permission denied";if(c.includes("unavailable"))return "Firebase temporarily unavailable";if(c.includes("unauthorized-domain"))return "website domain is not authorized in Firebase Authentication";if(c.includes("email-already-in-use"))return "this email already has an account; try Sign in";if(c.includes("invalid-credential"))return "email or password is incorrect";return e?.message||"unknown error"}
+function scheduleCloudSave(){
+ if(!currentUser||loadingRemote)return;
+ cloudState=readScreenState();
+ try{localStorage.setItem("growthTasks",JSON.stringify(cloudState.tasks));localStorage.setItem("growthNotes",cloudState.notes);localStorage.setItem("growthReview",cloudState.review)}catch(e){}
+ status("Saving changes to your account…");clearTimeout(saveTimer);
+ saveTimer=setTimeout(async()=>{try{await setDoc(doc(db,"users",currentUser.uid,"dashboard","state"),{tasks:cloudState.tasks||{},notes:cloudState.notes||"",review:cloudState.review||"",updatedAt:serverTimestamp()});status("Synced. Sign in with this same account on your other device.")}catch(e){console.error(e);status("Cloud sync failed: "+friendlyError(e)+". Check Firestore rules and connection.")}},500)
+}
+document.getElementById("signInBtn").addEventListener("click",async()=>{const email=document.getElementById("authEmail").value.trim(),password=document.getElementById("authPassword").value;if(!email||!password){status("Enter your email and password first.");return}try{status("Signing in…");await signInWithEmailAndPassword(auth,email,password)}catch(e){status("Sign-in failed: "+friendlyError(e))}});
+document.getElementById("signUpBtn").addEventListener("click",async()=>{const email=document.getElementById("authEmail").value.trim(),password=document.getElementById("authPassword").value;if(!email||!password){status("Enter your email and a password first.");return}if(password.length<6){status("Choose a password with at least 6 characters.");return}try{status("Creating account…");await createUserWithEmailAndPassword(auth,email,password)}catch(e){status("Account creation failed: "+friendlyError(e))}});
+document.getElementById("signOutBtn").addEventListener("click",()=>signOut(auth));
+onAuthStateChanged(auth,async user=>{
+ currentUser=user;
+ document.getElementById("signOutBtn").style.display=user?"inline-block":"none";
+ document.getElementById("signInBtn").style.display=user?"none":"inline-block";
+ document.getElementById("signUpBtn").style.display=user?"none":"inline-block";
+ if(!user){document.getElementById("dashboardContent").style.display="none";cloudState=null;status("Sign in or create your account to load your cloud-saved progress.");return}
+ status("Loading your saved progress…");loadingRemote=true;
+ try{
+  const snap=await getDoc(doc(db,"users",user.uid,"dashboard","state"));
+  cloudState=snap.exists()?snap.data():localSnapshot();
+  document.getElementById("dashboardContent").style.display="block";
+  render();
+  loadingRemote=false;
+  if(!snap.exists())scheduleCloudSave();
+  status("Signed in as "+user.email+". Your progress is ready.");
+ }catch(e){console.error(e);document.getElementById("dashboardContent").style.display="none";status("Could not load cloud data: "+friendlyError(e)+". Check Firestore rules.");}
+ finally{loadingRemote=false}
+});
+const groups = [
+
+{title:"Week 1 · Simulink setup",range:"19–25 Oct",tasks:[
+["w1a","Open MATLAB Academy and find Simulink Onramp","Start with the official course."],
+["w1b","Complete your first lesson","Write down five key concepts."],
+["w1c","Practise a simple model","Identify inputs, outputs and blocks."],
+["w1d","Review LinkedIn skills","List only skills you can genuinely demonstrate."],
+["w1e","Save notes and plan Week 2","Keep your work organised."]
+]},
+{title:"Weeks 1–2 · Simulink Onramp",range:"19 Oct–1 Nov",tasks:[
+["sim1","Work through Simulink Onramp lessons","Learn the interface and basic modelling."],
+["sim2","Complete the course exercises","Repeat difficult exercises independently."],
+["sim3","Save completion evidence","Check current certificate / completion terms."]
+]},
+{title:"Weeks 3–4 · MATLAB project",range:"2–15 Nov",tasks:[
+["mat1","Choose a mass-spring-damper example","Define the problem and assumptions."],
+["mat2","Build the MATLAB script or model","Use readable names and comments."],
+["mat3","Plot displacement over time","Label axes and units."],
+["mat4","Test different damping values","Explain how the response changes."],
+["mat5","Write a one-page project report","Include problem, method, result and limitation."]
+]},
+{title:"Weeks 5–7 · CAD",range:"16 Nov–6 Dec",tasks:[
+["cad1","Start Onshape CAD Basics","Complete the introductory lessons."],
+["cad2","Practise sketches and dimensions","Create a simple part."],
+["cad3","Design a bracket or sensor holder","Use sensible dimensions and constraints."],
+["cad4","Create an engineering drawing","Include views, dimensions and units."],
+["cad5","Capture screenshots and document the model","Explain the design choices."]
+]},
+{title:"Weeks 8–9 · Python basics",range:"7–20 Dec",tasks:[
+["py1","Start Kaggle Learn Python","Complete lessons in order."],
+["py2","Practise variables and conditions","Write a small program."],
+["py3","Practise loops, lists and functions","Explain what each section does."],
+["py4","Finish Python lessons and save certificate","Verify completion requirements."]
+]},
+{title:"Weeks 10–11 · Python data project",range:"21 Dec–3 Jan",tasks:[
+["data1","Find or create sample sensor data","Use synthetic or properly credited data."],
+["data2","Write a script to summarise readings","Calculate average, minimum and maximum."],
+["data3","Create a graph","Label axes and explain trends."],
+["data4","Write project README and limitations","Be clear about what is simulated."]
+]},
+{title:"Weeks 12–13 · Publish and apply",range:"4–16 Jan",tasks:[
+["pub1","Add completed certificates to LinkedIn","Include credential links where available."],
+["pub2","Add two or three projects to Featured","Use clear titles and screenshots."],
+["pub3","Update CV with skills and project links","Keep claims accurate."],
+["pub4","Find relevant internships / SIWES roles","Check requirements and deadlines."],
+["pub5","Send thoughtful networking messages","Personalize each message."],
+["pub6","Explore small, clearly scoped gigs","Pitch only work you can deliver."]
+]}
+];
+const routine = [
+["Monday","Learn a new concept"],
+["Tuesday","Practise without copying"],
+["Wednesday","Continue lessons and revise"],
+["Thursday","Build one project feature"],
+["Friday","LinkedIn, companies and opportunities"],
+["Saturday","Finish project work and document it"],
+["Sunday","Review progress and rest"]
+];
+const courses = [
+["Simulink Onramp","Free MathWorks learning course; a natural next step after MATLAB Onramp.","https://matlabacademy.mathworks.com/","simcourse"],
+["Onshape CAD Basics","Free learning path; completion evidence depends on the required course steps. This is not the same as a paid professional exam.","https://learn.onshape.com/learn/learning-path/introduction-to-cad","cadcourse"],
+["Kaggle Learn: Python","Beginner Python practice and course completion certificate.","https://www.kaggle.com/learn/python","pycourse"],
+["Kaggle Learn: Pandas","Optional next step for data cleaning and analysis.","https://www.kaggle.com/learn","pandascourse"],
+["Cisco Networking Academy: Programming","Optional structured Python learning; check current availability and credential terms.","https://www.netacad.com/catalogs/learn/programming","ciscocourse"],
+["IBM SkillsBuild","Explore free learning and pathways that explicitly include digital credentials.","https://skillsbuild.org/","ibmcourse"]
+];
+const portfolio = [
+{title:"Project 1 — MATLAB simulation",desc:"Model a mass-spring-damper system, plot response and explain the effect of damping.",tasks:[["p1a","Define the model and assumptions"],["p1b","Build and test the script/model"],["p1c","Save graph and screenshots"],["p1d","Write README / report"]]},
+{title:"Project 2 — CAD component",desc:"Model a bracket or sensor holder and create a dimensioned engineering drawing.",tasks:[["p2a","Create the 3D part"],["p2b","Check dimensions and constraints"],["p2c","Create drawing with units"],["p2d","Capture screenshots and explain design"]]},
+{title:"Project 3 — Python sensor-data analysis",desc:"Analyse sample sensor readings, calculate summary statistics and create a graph.",tasks:[["p3a","Prepare sample data"],["p3b","Write summary calculations"],["p3c","Create and label graph"],["p3d","Document findings and limitations"]]}
+];
+const linkedin = [
+["li1","Check headline and About section","Make engineering interests and current role clear."],
+["li2","Add completed certificates","Use exact certificate names and credential links if available."],
+["li3","Add skills you can demonstrate","Prioritize MATLAB, CAD, technical documentation and Python as it develops."],
+["li4","Add project links to Featured","Use a screenshot and a concise project description."],
+["li5","Publish a learning update every two weeks","Share a real result and what you learned."]
+];
+const jobtasks = [
+["job1","Save five relevant employers or teams","Include engineering, manufacturing, automation or technical businesses."],
+["job2","Review suitable internship / SIWES vacancies","Check eligibility, location and deadlines."],
+["job3","Send two thoughtful professional connection requests","Mention a genuine shared interest or relevant work."],
+["job4","Apply to suitable roles as your evidence improves","Tailor your CV; track application date and follow-up."]
+];
+function taskMarkup(t){return `<div class="task"><input type="checkbox" id="${t[0]}" data-task="${t[0]}"><label for="${t[0]}"><strong>${t[1]}</strong>${t[2]?`<small>${t[2]}</small>`:""}</label></div>`}
+function render(){
+ document.getElementById("weekTasks").innerHTML=groups[0].tasks.map(taskMarkup).join("");
+ document.getElementById("roadmapTasks").innerHTML=groups.slice(1).map(g=>`<div class="card"><span class="pill">${g.range}</span><h2>${g.title}</h2>${g.tasks.map(taskMarkup).join("")}</div>`).join("");
+ document.getElementById("weeklyRoutine").innerHTML=routine.map(r=>`<div class="task"><div style="width:88px;color:var(--green);font-weight:700;font-size:13px">${r[0]}</div><div style="font-size:14px">${r[1]}</div></div>`).join("");
+ document.getElementById("courseLinks").innerHTML=courses.map(c=>`<div class="linkrow"><a href="${c[2]}" target="_blank" rel="noopener">${c[0]} ↗</a><p>${c[1]}</p><div style="margin-top:8px">${taskMarkup([c[3],"Mark course reviewed","Open the course and check the current requirements."])}</div></div>`).join("");
+ document.getElementById("portfolioTasks").innerHTML=portfolio.map(p=>`<div class="card"><h2>${p.title}</h2><p class="muted">${p.desc}</p>${p.tasks.map(taskMarkup).join("")}</div>`).join("");
+ document.getElementById("linkedinTasks").innerHTML=linkedin.map(taskMarkup).join("");
+ document.getElementById("jobTasks").innerHTML=jobtasks.map(taskMarkup).join("");
+ const saved=loadState();
+ document.querySelectorAll('[data-task]').forEach(el=>{el.checked=!!saved[el.dataset.task];el.addEventListener('change',()=>{const s=loadState();s[el.dataset.task]=el.checked;saveState(s);updateProgress()})});
+ document.getElementById("notesBox").value=(cloudState&&typeof cloudState.notes==="string")?cloudState.notes:(localStorage.getItem("growthNotes")||"");
+ document.getElementById("reviewBox").value=(cloudState&&typeof cloudState.review==="string")?cloudState.review:(localStorage.getItem("growthReview")||"");
+ updateProgress();
+}
+function loadState(){if(cloudState&&cloudState.tasks)return cloudState.tasks;try{return JSON.parse(localStorage.getItem("growthTasks")||"{}")}catch(e){return {}}}
+function saveState(s){try{localStorage.setItem("growthTasks",JSON.stringify(s))}catch(e){}if(cloudState)cloudState.tasks=s;scheduleCloudSave()}
+function updateProgress(){const boxes=[...document.querySelectorAll('[data-task]')];const count=boxes.filter(x=>x.checked).length;const total=boxes.length;document.getElementById("doneCount").textContent=count;document.getElementById("totalCount").textContent=total;const pct=total?Math.round(count/total*100):0;document.getElementById("percent").textContent=pct+"%";document.getElementById("progressBar").style.width=pct+"%"}
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll("section").forEach(s=>s.classList.toggle("active",s.id===b.dataset.tab));window.scrollTo({top:0,behavior:"smooth"})}));
+function saveNotes(){try{localStorage.setItem("growthNotes",document.getElementById("notesBox").value)}catch(e){}if(cloudState)cloudState.notes=document.getElementById("notesBox").value;scheduleCloudSave();document.getElementById("noteStatus").textContent="Notes saved; syncing to your account…"}
+function saveReview(){try{localStorage.setItem("growthReview",document.getElementById("reviewBox").value)}catch(e){}if(cloudState)cloudState.review=document.getElementById("reviewBox").value;scheduleCloudSave();document.getElementById("noteStatus").textContent="Weekly review saved; syncing to your account…"}
+function copyTemplate(){const el=document.getElementById("template");el.select();try{document.execCommand("copy")}catch(e){}}
+function copyMessage(){const el=document.getElementById("message");el.select();try{document.execCommand("copy")}catch(e){}}
+function exportData(){const data={tasks:loadState(),notes:document.getElementById("notesBox").value,review:document.getElementById("reviewBox").value,exportedAt:new Date().toISOString()};const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="my-90-day-growth-progress.json";a.click();URL.revokeObjectURL(a.href)}
+function resetProgress(){if(confirm("Reset all completed checkboxes? Your notes will remain.")){localStorage.removeItem("growthTasks");document.querySelectorAll("[data-task]").forEach(x=>x.checked=false);if(cloudState)cloudState.tasks={};updateProgress();scheduleCloudSave()}}
+document.getElementById("notesBox").addEventListener("input",()=>{if(cloudState)cloudState.notes=document.getElementById("notesBox").value;scheduleCloudSave()});
+document.getElementById("reviewBox").addEventListener("input",()=>{if(cloudState)cloudState.review=document.getElementById("reviewBox").value;scheduleCloudSave()});
+window.copyTemplate=copyTemplate;window.copyMessage=copyMessage;window.saveNotes=saveNotes;window.saveReview=saveReview;window.exportData=exportData;window.resetProgress=resetProgress;
+document.getElementById("dateLine").textContent="90-day plan • 19 October 2026 – 16 January 2027";
+render();
+</script>
+</body>
+</html>
